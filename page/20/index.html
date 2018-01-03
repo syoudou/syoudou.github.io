@@ -174,6 +174,138 @@
 
     
     
+      
+      
+
+      
+    
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2009/08/21/ライフゲーム？のチラシの裏/" itemprop="url">
+                  ライフゲーム？のチラシの裏
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            Posted on
+            <time itemprop="dateCreated" datetime="2009-08-21T00:16:29+09:00" content="2009-08-21">
+              2009-08-21
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; In
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/制作物/" itemprop="url" rel="index">
+                    <span itemprop="name">制作物</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2009/08/21/ライフゲーム？のチラシの裏/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2009/08/21/ライフゲーム？のチラシの裏/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <p>気がついたらコミケから五日が経っていました。惚けるのもいい加減にしないとな。</p>
+<p>今日は、コミケ前に作った<a href="/2009/08/12/ライフゲームもどき/">ライフゲームっぽいゲーム</a>の製作秘話というかチラシの裏な話です。自己満足な内容なので興味のある方だけ読んでください。</p>
+<p>まず始めに製作にあたって参考にしたサイトのご紹介。本当は前の記事に載せるつもりだったんですが、忘れていたのでここで紹介します。</p>
+<p><a href="http://javagame.skr.jp/index.php?%A5%E9%A5%A4%A5%D5%A5%B2%A1%BC%A5%E0" target="_blank" rel="external">Javaでゲーム作りますが何か？</a></p>
+<p>Javaで作成した正真正銘のライフゲームを公開しているサイト。ライフゲーム？の雛形にさせていただきました。ボタンとかウィンドウサイズとか名残がいっぱいあります。コメントが丁寧で分かりやすいです。他にもJavaでゲームやら人工知能やら色々と参考になりそうなことが載っています。</p>
+<p>はい。ここからは本当にチラシの裏。盤面をクリックすると見ることの出来るステータスとか細かい仕様の話です。</p>
+<p>ライフゲーム？では名前を入力すると勝手にステータスが決定されますが、内部では入力された名前から、128bitのMD5ハッシュ値を作成し、それをバイト毎に区切ってステータスの計算に利用しています。これはMD5バトルとかから思いつきました。ステータスは全部で５種類あります。それぞれの役割は以下の通りです。</p>
+<ul>
+<li>hp：体力<br>無くなると死滅し、周囲の他の勢力のセルに置き換わる(体力が少し回復するが基本的にはそのままコピー)。</li>
+<li>str:攻撃力<br>これが高いと他勢力のセルのhpを大きく減らす。</li>
+<li>def:防御力<br>これが高いと他勢力の攻撃を軽減する。ちなみに攻撃範囲は周囲８セル。あんまり役に立たない。</li>
+<li>vit:回復力<br>セルは何もしてないとき自然回復する(めっちゃ遅い)。そのときの回復量。あとセルが置き換わったときの回復量が大きくなる(むしろこっちの方が重要かも)。</li>
+<li>pot:潜在能力<br>これが高いと突然変異しやすくなる(後述)</li>
+</ul>
+<p>もっとも重要なのは体力と潜在能力。攻撃力と防御力は内部で平方根にして計算しているので、小さすぎない限り影響は少ないです。体力は２倍違えばそのまま２倍長持ちするので、影響力大です。vitによる自然回復は、雀の涙程度のモノなので戦力にはほとんど影響しません。セルが置き換わったときの回復量も体力に対するパーセントなので、これもやっぱり体力が高い方が有利です。</p>
+<p>最後に潜在能力について。実際にゲームを起動してステータスを見てみた人は不思議に思ったかもしれませんが、ステータスが場所によって違っています。実はセルが生まれ変わるときに、低い確率で突然変異が起こります。具体的にはMD5で作成した128bitのうち1～3bitが反転します。初期ステータスが低くても、potが高くて突然変異が起こりやすければ逆転できるかもしれません。さらに、突然変異が起きると体力全快の状態で生まれるので生き残りやすくなります。</p>
+<p>以下、細々としたこと</p>
+<ul>
+<li>盤面データは白黒のbmpファイルを使用している</li>
+<li>任意の画像ファイルを読み込ませて・・・とか考えたけど、セルの初期位置の設定とかが面倒くさいので放棄</li>
+<li>同じ名前、同じ配置なら何回やっても結果は変わらない</li>
+<li>128bitをバイト毎(8bit)に区切って管理しているが、突然変異の時に超低確率で1bit増える(超肉体登場の予感)</li>
+<li>プレイヤー名をgaer、gae、dg、sgにすると、すげー時間掛かった。逆転に次ぐ逆転</li>
+</ul>
+<p>以上、チラシの裏でした。</p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -617,113 +749,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2009/08/01/東方の迷宮～16F/" itemprop="url">
-                  東方の迷宮～16F
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            Posted on
-            <time itemprop="dateCreated" datetime="2009-08-01T04:34:25+09:00" content="2009-08-01">
-              2009-08-01
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; In
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/東方/" itemprop="url" rel="index">
-                    <span itemprop="name">東方</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2009/08/01/東方の迷宮～16F/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2009/08/01/東方の迷宮～16F/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <p>東方の迷宮を悠々と遊んでます。現在16Fまで進攻中。</p>
-<p>16Fにて八雲紫に勝利。<br><img src="https://odenpa.com/images/2009/08/yukari.jpg" alt="東方の迷宮16-1"></p>
-<p>八雲紫に初めて勝負を挑んだときは、レミリア以外のキャラが一発で消し飛んで、勝てる訳ねぇ！な、状態だったのですが、下位層で他のキャラを仲間にしたり、レベルを上げたりして、再度挑戦してみたら楽勝になってました。以下倒す直前のステータス(注意：画像サイズ大)</p>
-<p><img src="https://odenpa.com/images/2009/08/thnmk003.jpg" alt="東方の迷宮16-2"></p>
-<p>平均レベルは85ぐらいかな。戦法はうどんげで相手の能力を下げて、後はやっぱり「お嬢様がとにかく頑張る」です。レミリアは常に自己強化していればダメージを食らうことはないので、負ける要素はありません。うん、正攻法ですね。</p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -770,7 +795,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">209</span>
+              <span class="site-state-item-count">210</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -837,7 +862,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="icon-next-heart fa fa-heart"></i>
   </span>
