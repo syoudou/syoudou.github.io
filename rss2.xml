@@ -8,7 +8,7 @@
     <atom:link href="/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Wed, 03 Jan 2018 06:24:03 GMT</pubDate>
+    <pubDate>Wed, 03 Jan 2018 06:30:13 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
@@ -18,12 +18,11 @@
       <pubDate>Wed, 03 Jan 2018 06:23:10 GMT</pubDate>
       <description>
       
-        &lt;p&gt;デレステキャラソートのソートの仕組みに関する質問があったので、大したものではないですがソートのアルゴリズムについて書きます。&lt;/p&gt;
-&lt;h2 id=&quot;ソートの説明&quot;&gt;&lt;a href=&quot;#ソートの説明&quot; class=&quot;headerlink&quot; title=&quot;ソートの説明&quot;&gt;&lt;/
+        &lt;p&gt;&lt;a href=&quot;https://odenpa.com/sgsort/&quot; title=&quot;デレステキャラソート&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;デレステキャラソート&lt;/a&gt;のソートの仕組みに関する質問があったので、大したものではないですがソート
       
       </description>
       
-      <content:encoded><![CDATA[<p>デレステキャラソートのソートの仕組みに関する質問があったので、大したものではないですがソートのアルゴリズムについて書きます。</p>
+      <content:encoded><![CDATA[<p><a href="https://odenpa.com/sgsort/" title="デレステキャラソート" target="_blank" rel="external">デレステキャラソート</a>のソートの仕組みに関する質問があったので、大したものではないですがソートのアルゴリズムについて書きます。</p>
 <h2 id="ソートの説明"><a href="#ソートの説明" class="headerlink" title="ソートの説明"></a>ソートの説明</h2><p>データの構造に木構造を使った仕組みになってます。</p>
 <p>次の3つの処理を繰り返し行うことで順位を確定します。</p>
 <ul>
